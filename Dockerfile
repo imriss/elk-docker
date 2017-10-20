@@ -38,9 +38,9 @@ FROM imriss/archlinux
 
 ENV GOSU_VERSION 1.8
 
-RUN mkdir -p sandground
+RUN mkdir -p /home/docker/sandground
 WORKDIR /home/docker/sandground    
-RUN git clone https://github.com/gosu/gosu .
+RUN git clone https://github.com/gosu/gosu
 RUN cd gosu && mkdir -p build && cd build && cmake .. && make && make install \
  && gosu nobody true
 
