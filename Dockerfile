@@ -27,7 +27,7 @@ RUN export "PATH=/usr/bin/core_perl:$PATH" && \
 
 RUN su docker -c 'pacaur -S --noprogressbar --noedit --noconfirm --needed base-devel openal pango sdl2 sdl2_ttf libsndfile \
     pkg-config mpg123 ruby jdk8-openjdk cmake '
-RUN su docker -c 'pacaur -S --noprogressbar --noedit --noconfirm --needed cmake git '
+RUN su docker -c 'pacaur -S --noprogressbar --noedit --noconfirm --needed cmake '
 FROM imriss/archlinux
 
 ###############################################################################
@@ -38,11 +38,10 @@ FROM imriss/archlinux
 
 ENV GOSU_VERSION 1.8
 
-RUN echo `ls /home/` \
- && mkdir -p sandground
+RUN mkdir -p sandground
 WORKDIR /home/docker/sandground    
-RUN git clone https://github.com/gosu/gosu \
- && cd gosu && mkdir -p build && cd build && cmake .. && make && make install \
+RUN git clone https://github.com/gosu/gosu 
+RUN cd gosu && mkdir -p build && cd build && cmake .. && make && make install \
  && gosu nobody true \
 
 ENV ELK_VERSION 5.6.3
