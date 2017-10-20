@@ -27,11 +27,8 @@ RUN export "PATH=/usr/bin/core_perl:$PATH" && \
 
 RUN su docker -c 'pacaur -S --noprogressbar --noedit --noconfirm --needed base-devel openal pango sdl2 sdl2_ttf libsndfile \
     pkg-config mpg123 ruby jdk8-openjdk cmake '
-RUN su docker -c 'pacaur -S --noprogressbar --noedit --noconfirm --needed cmake '
+RUN su docker -c 'pacaur -S --noprogressbar --noedit --noconfirm --needed cmake git '
 FROM imriss/archlinux
-MAINTAINER Sebastien Pujadas http://pujadas.net
-ENV REFRESHED_AT 2017-01-13
-
 
 ###############################################################################
 #                                INSTALLATION
@@ -41,7 +38,7 @@ ENV REFRESHED_AT 2017-01-13
 
 ENV GOSU_VERSION 1.8
 
-RUN ls /home/ \
+RUN echo `ls /home/` \
  && mkdir -p sandground
 WORKDIR /home/docker/sandground    
 RUN git clone https://github.com/gosu/gosu \
