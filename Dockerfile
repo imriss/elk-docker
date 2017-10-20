@@ -26,7 +26,7 @@ RUN export "PATH=/usr/bin/core_perl:$PATH" && \
     add-aur docker
 
 RUN su docker -c 'pacaur -S --noprogressbar --noedit --noconfirm --needed base-devel openal pango sdl2 sdl2_ttf libsndfile \
-    pkg-config mpg123 ruby jdk8-openjdk '
+    pkg-config mpg123 ruby jdk8-openjdk cmake '
 FROM imriss/archlinux
 MAINTAINER Sebastien Pujadas http://pujadas.net
 ENV REFRESHED_AT 2017-01-13
@@ -40,24 +40,12 @@ ENV REFRESHED_AT 2017-01-13
 
 ENV GOSU_VERSION 1.8
 
-ARG DEBIAN_FRONTEND=noninteractive
-RUN set -x \
- && apt-get update -qq \
- && apt-get install -qqy --no-install-recommends ca-certificates curl \
- && rm -rf /var/lib/apt/lists/* \
- && curl -L -o /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
- && curl -L -o /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
- && export GNUPGHOME="$(mktemp -d)" \
- && gpg --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
- && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
- && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
- && chmod +x /usr/local/bin/gosu \
+RUN cd /home/docker \
+ && mkdir -p sandground
+WORKINGDIR /home/docker/sandground    
+RUN git clone https://github.com/gosu/gosu \
+ && cd gosu && mkdir -p build && cd build && cmake .. && make && make install \
  && gosu nobody true \
- && apt-get update -qq \
- && apt-get install -qqy openjdk-8-jdk \
- && apt-get clean \
- && set +x
-
 
 ENV ELK_VERSION 5.6.3
 
