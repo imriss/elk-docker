@@ -42,7 +42,7 @@ RUN mkdir -p sandground
 WORKDIR /home/docker/sandground    
 RUN git clone https://github.com/gosu/gosu 
 RUN cd gosu && mkdir -p build && cd build && cmake .. && make && make install \
- && gosu nobody true \
+ && gosu nobody true
 
 ENV ELK_VERSION 5.6.3
 
