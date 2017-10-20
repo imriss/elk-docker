@@ -28,7 +28,6 @@ RUN export "PATH=/usr/bin/core_perl:$PATH" && \
 RUN su docker -c 'pacaur -S --noprogressbar --noedit --noconfirm --needed base-devel openal pango sdl2 sdl2_ttf libsndfile \
     pkg-config mpg123 ruby jdk8-openjdk cmake '
 RUN su docker -c 'pacaur -S --noprogressbar --noedit --noconfirm --needed cmake '
-FROM imriss/archlinux
 
 ###############################################################################
 #                                INSTALLATION
