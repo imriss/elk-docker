@@ -42,7 +42,7 @@ ENV GOSU_VERSION 1.8
 
 RUN cd /home/docker \
  && mkdir -p sandground
-WORKINGDIR /home/docker/sandground    
+WORKDIR /home/docker/sandground    
 RUN git clone https://github.com/gosu/gosu \
  && cd gosu && mkdir -p build && cd build && cmake .. && make && make install \
  && gosu nobody true \
