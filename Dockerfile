@@ -1,12 +1,32 @@
-# Dockerfile for ELK stack
-# Elasticsearch, Logstash, Kibana 5.6.3
-
-# Build with:
-# docker build -t <repo-user>/elk .
+# ELK stack Dockerfile
+FROM imriss/archlinux
+RUN echo 'ELK stack on Arch Linux'
+MAINTAINER Reza Farrahi <imriss@ieee.org>
+LABEL description="ELK stack / Arch Linux"
 
 # Run with:
-# docker run -p 5601:5601 -p 9200:9200 -p 5044:5044 -it --name elk <repo-user>/elk
+# docker run -p 5601:5601 -p 9200:9200 -p 5044:5044 -it --name elk imriss/elk_archlinux
 
+RUN  pacman -Syyu --noconfirm && \
+  pacman -S findutils nano vi --noconfirm --needed && \
+  pacman-db-upgrade && \
+  export editor=nano && \
+  pacman -S --noconfirm --needed systemd python python-yaml wget python-pip openssh git curl jq yajl perl expac \
+  gcc gcc-libs clang && \
+  pip install --upgrade pip && \
+  pip install simplejson
+
+# DDADD https://raw.githubusercontent.com/imriss/scylla/master/aur.sh /usr/sbin/aur.sh
+# DDADD https://raw.githubusercontent.com/imriss/scylla/master/add-aur.sh /usr/sbin/add-aur
+ADD ./aur.sh /usr/sbin/aur.sh
+ADD ./add-aur.sh /usr/sbin/add-aur
+RUN chmod u+x /usr/sbin/aur.sh
+RUN chmod u+x /usr/sbin/add-aur
+RUN export "PATH=/usr/bin/core_perl:$PATH" && \
+    add-aur docker
+
+RUN su docker -c 'pacaur -S --noprogressbar --noedit --noconfirm --needed base-devel openal pango sdl2 sdl2_ttf libsndfile \
+    pkg-config mpg123 ruby jdk8-openjdk '
 FROM imriss/archlinux
 MAINTAINER Sebastien Pujadas http://pujadas.net
 ENV REFRESHED_AT 2017-01-13
